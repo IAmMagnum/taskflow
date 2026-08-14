@@ -19,8 +19,10 @@ cd backend
 npm install
 node seed.js
 node server.js
-
+```
 ### 1. Frontend Setup
+```bash
 cd frontend
 npm install
 npm run dev
+```
