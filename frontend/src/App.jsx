@@ -108,7 +108,7 @@ const handleCreateBoard = async (e) => {
     <div className="min-h-screen bg-gray-100 flex flex-col font-sans">
       <header className="bg-white border-b border-gray-200 px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">TaskFlow</h1>
+          <h1 className="text-xl font-bold text-gray-900">TaskFlow - hello i am here </h1>
                {/* Board Selector */}
   <select
     value={activeBoardId}
