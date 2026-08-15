@@ -108,9 +108,25 @@ const handleCreateBoard = async (e) => {
     <div className="min-h-screen bg-gray-100 flex flex-col font-sans">
       <header className="bg-white border-b border-gray-200 px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">TaskFlow - hello i am here </h1>
-               {/* Board Selector */}
-  <select
+          <h1 className="text-xl font-bold text-gray-900">TaskFlow</h1>
+          <p className="text-xs text-gray-500">Lightweight Team Board</p>
+        </div>
+
+
+
+
+   
+
+    
+
+
+
+
+
+
+
+        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+           <select
     value={activeBoardId}
     onChange={(e) => setActiveBoardId(Number(e.target.value))}
     className="bg-gray-100 font-semibold text-gray-800 text-sm border border-gray-300 rounded-md px-2 py-1 outline-none cursor-pointer"
@@ -129,27 +145,6 @@ const handleCreateBoard = async (e) => {
   >
     + Board
   </button>
-
-          <p className="text-xs text-gray-500">Lightweight Team Board</p>
-        </div>
-
-
-
-
-   
-
-    
-
-
-
-
-
-
-
-        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-
-
-
 
 
 
