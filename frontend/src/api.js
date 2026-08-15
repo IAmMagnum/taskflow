@@ -10,11 +10,19 @@ async function handleResponse(response) {
 }
 
 export const api = {
-  getBoard: async (boardId = 1, priority = 'All') => {
-    const url = `${API_BASE_URL}/board/${boardId}${priority !== 'All' ? `?priority=${priority}` : ''}`;
-    const res = await fetch(url);
-    return handleResponse(res);
-  },
+ getBoards: async () => {
+  const res = await fetch(`${API_BASE_URL}/boards`);
+  return handleResponse(res);
+},
+
+createBoard: async (title) => {
+  const res = await fetch(`${API_BASE_URL}/boards`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title })
+  });
+  return handleResponse(res);
+},
 
   createTask: async (taskData) => {
     const res = await fetch(`${API_BASE_URL}/tasks`, {
@@ -39,23 +47,7 @@ export const api = {
       method: 'DELETE'
     });
     return handleResponse(res);
-  },
-
-
-
-  getBoards: async () => {
-  const res = await fetch(`${API_BASE_URL}/boards`);
-  return handleResponse(res);
-},
-
-createBoard: async (title) => {
-  const res = await fetch(`${API_BASE_URL}/boards`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title })
-  });
-  return handleResponse(res);
-}
+  }
 
 
 
