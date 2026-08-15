@@ -39,7 +39,7 @@ export const api = {
       method: 'DELETE'
     });
     return handleResponse(res);
-  }
+  },
 
 
 
