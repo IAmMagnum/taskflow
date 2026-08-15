@@ -117,6 +117,17 @@ const handleCreateBoard = async (e) => {
 
     
 
+
+
+
+
+
+
+        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+
+
+
+
   {/* Board Selector Dropdown & New Board Button */}
   <div className="flex items-center space-x-3">
     <select
@@ -138,14 +149,6 @@ const handleCreateBoard = async (e) => {
       + New Board
     </button>
   </div>
-
-
-
-
-
-
-        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-
 
 
 
