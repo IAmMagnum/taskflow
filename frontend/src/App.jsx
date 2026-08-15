@@ -115,11 +115,7 @@ const handleCreateBoard = async (e) => {
 
 
 
-     <header className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-  <div>
-    <h1 className="text-2xl font-bold text-gray-900">TaskFlow</h1>
-    <p className="text-sm text-gray-500">Lightweight Team Board</p>
-  </div>
+    
 
   {/* Board Selector Dropdown & New Board Button */}
   <div className="flex items-center space-x-3">
@@ -142,7 +138,7 @@ const handleCreateBoard = async (e) => {
       + New Board
     </button>
   </div>
-</header>
+
 
 
 
