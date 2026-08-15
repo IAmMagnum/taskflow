@@ -123,4 +123,42 @@ router.get('/stats/column-counts/:boardId', (req, res) => {
   res.json(stats);
 });
 
+// GET /api/boards - Fetch list of all boards
+router.get('/boards', (req, res) => {
+  try {
+    const boards = db.prepare('SELECT * FROM boards ORDER BY id ASC').all();
+    res.json(boards);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch boards.' });
+  }
+});
+
+// POST /api/boards - Create a new board with default columns
+router.post('/boards', (req, res) => {
+  try {
+    const { title } = req.body;
+    if (!title || !title.trim()) {
+      return res.status(400).json({ error: 'Board title is required.' });
+    }
+
+    // Insert new board
+    const boardStmt = db.prepare('INSERT INTO boards (title) VALUES (?)');
+    const result = boardStmt.run(title.trim());
+    const newBoardId = result.lastInsertRowid;
+
+    // Create default columns for the new board
+    const insertColumn = db.prepare('INSERT INTO columns (board_id, title, position) VALUES (?, ?, ?)');
+    insertColumn.run(newBoardId, 'To Do', 1);
+    insertColumn.run(newBoardId, 'In Progress', 2);
+    insertColumn.run(newBoardId, 'Done', 3);
+
+    const newBoard = db.prepare('SELECT * FROM boards WHERE id = ?').get(newBoardId);
+    res.status(201).json(newBoard);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create board.' });
+  }
+});
+
+
+
 module.exports = router;

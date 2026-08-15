@@ -40,4 +40,23 @@ export const api = {
     });
     return handleResponse(res);
   }
+
+
+
+  getBoards: async () => {
+  const res = await fetch(`${API_BASE_URL}/boards`);
+  return handleResponse(res);
+},
+
+createBoard: async (title) => {
+  const res = await fetch(`${API_BASE_URL}/boards`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title })
+  });
+  return handleResponse(res);
+}
+
+
+
 };

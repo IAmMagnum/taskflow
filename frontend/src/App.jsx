@@ -15,21 +15,56 @@ export default function App() {
 
   const [searchTerm, setSearchTerm] = useState('');
 
-  const fetchBoard = async () => {
+  const [boards, setBoards] = useState([]);
+const [activeBoardId, setActiveBoardId] = useState(1);
+const [isNewBoardModalOpen, setIsNewBoardModalOpen] = useState(false);
+const [newBoardTitle, setNewBoardTitle] = useState('');
+
+  // Fetch board list on mount
+useEffect(() => {
+  const loadBoards = async () => {
     try {
-      const data = await api.getBoard(1, priorityFilter);
-      setBoard(data);
-      setErrorMessage('');
+      const data = await api.getBoards();
+      setBoards(data);
+      if (data.length > 0) setActiveBoardId(data[0].id);
     } catch (err) {
-      setErrorMessage('Failed to load board data. Make sure backend is running on port 5000.');
-    } finally {
-      setLoading(false);
+      setErrorMessage('Failed to fetch boards.');
     }
   };
+  loadBoards();
+}, []);
 
-  useEffect(() => {
-    fetchBoard();
-  }, [priorityFilter]);
+// Fetch active board data when activeBoardId or priorityFilter changes
+const fetchBoard = async () => {
+  if (!activeBoardId) return;
+  try {
+    const data = await api.getBoard(activeBoardId, priorityFilter);
+    setBoard(data);
+    setErrorMessage('');
+  } catch (err) {
+    setErrorMessage('Failed to load board data.');
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  fetchBoard();
+}, [activeBoardId, priorityFilter]);
+
+const handleCreateBoard = async (e) => {
+  e.preventDefault();
+  if (!newBoardTitle.trim()) return;
+  try {
+    const createdBoard = await api.createBoard(newBoardTitle);
+    setBoards([...boards, createdBoard]);
+    setActiveBoardId(createdBoard.id);
+    setNewBoardTitle('');
+    setIsNewBoardModalOpen(false);
+  } catch (err) {
+    setErrorMessage('Failed to create board.');
+  }
+};
 
   const handleSaveTask = async (taskData) => {
     try {
@@ -77,7 +112,33 @@ export default function App() {
           <p className="text-xs text-gray-500">Lightweight Team Board</p>
         </div>
 
-        
+
+
+
+        <div className="flex items-center space-x-3">
+          <h1 className="text-xl font-bold text-gray-900">TaskFlow</h1>
+  
+             {/* Board Selector */}
+             <select
+               value={activeBoardId}
+               onChange={(e) => setActiveBoardId(Number(e.target.value))}
+               className="bg-gray-100 font-semibold text-gray-800 text-sm border border-gray-300 rounded-md px-2 py-1 outline-none cursor-pointer"
+               >
+               {boards.map((b) => (
+               <option key={b.id} value={b.id}>
+                {b.title}
+               </option>
+               ))}
+              </select>
+
+  {/* New Board Button */}
+  <button
+    onClick={() => setIsNewBoardModalOpen(true)}
+    className="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-2.5 py-1.5 rounded-md transition"
+  >
+    + Board
+  </button>
+</div>
 
 
 
@@ -212,6 +273,42 @@ export default function App() {
         initialTask={editingTask}
         defaultColumnId={board?.columns[0]?.id || 1}
       />
+
+
+      {isNewBoardModalOpen && (
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+    <div className="bg-white rounded-lg max-w-sm w-full p-6 shadow-xl">
+      <h3 className="text-md font-bold text-gray-800 mb-4">Create New Board</h3>
+      <form onSubmit={handleCreateBoard} className="space-y-4">
+        <input
+          type="text"
+          placeholder="Board Name (e.g. Marketing, Sprint 1)"
+          value={newBoardTitle}
+          onChange={(e) => setNewBoardTitle(e.target.value)}
+          className="w-full border border-gray-300 rounded p-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <div className="flex justify-end space-x-2">
+          <button
+            type="button"
+            onClick={() => setIsNewBoardModalOpen(false)}
+            className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-3 py-1.5 text-xs font-medium bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Create
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
+
+
+
     </div>
   );
 }
