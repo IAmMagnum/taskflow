@@ -10,10 +10,18 @@ async function handleResponse(response) {
 }
 
 export const api = {
- getBoards: async () => {
-  const res = await fetch(`${API_BASE_URL}/boards`);
-  return handleResponse(res);
-},
+getBoards: async () => {
+    const res = await fetch(`${API_BASE_URL}/boards`);
+    if (!res.ok) throw new Error('Failed to fetch boards');
+    return res.json();
+  },
+
+  // Get single board with tasks
+  getBoard: async (id = 1, priority = 'All') => {
+    const res = await fetch(`${API_BASE_URL}/board/${id}?priority=${priority}`);
+    if (!res.ok) throw new Error('Failed to fetch board data');
+    return res.json();
+  },
 
 createBoard: async (title) => {
   const res = await fetch(`${API_BASE_URL}/boards`, {
