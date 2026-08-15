@@ -115,6 +115,28 @@ const handleCreateBoard = async (e) => {
 
 
 
+        {/* Board Selector */}
+  <select
+    value={activeBoardId}
+    onChange={(e) => setActiveBoardId(Number(e.target.value))}
+    className="bg-gray-100 font-semibold text-gray-800 text-sm border border-gray-300 rounded-md px-2 py-1 outline-none cursor-pointer"
+  >
+    {boards.map((b) => (
+      <option key={b.id} value={b.id}>
+        {b.title}
+      </option>
+    ))}
+  </select>
+
+  {/* New Board Button */}
+  <button
+    onClick={() => setIsNewBoardModalOpen(true)}
+    className="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-2.5 py-1.5 rounded-md transition"
+  >
+    + Board
+  </button>
+
+
     
 
 
@@ -128,27 +150,6 @@ const handleCreateBoard = async (e) => {
 
 
 
-  {/* Board Selector Dropdown & New Board Button */}
-  <div className="flex items-center space-x-3">
-    <select
-      value={activeBoardId || ''}
-      onChange={(e) => setActiveBoardId(Number(e.target.value))}
-      className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 shadow-sm outline-none focus:ring-2 focus:ring-blue-500"
-    >
-      {boards.map((b) => (
-        <option key={b.id} value={b.id}>
-          {b.title}
-        </option>
-      ))}
-    </select>
-
-    <button
-      onClick={() => setIsNewBoardModalOpen(true)}
-      className="px-3 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-900 transition-colors shadow-sm flex items-center gap-1"
-    >
-      + New Board
-    </button>
-  </div>
 
 
 
